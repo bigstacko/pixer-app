@@ -12,6 +12,8 @@ pipeline{
             steps{
                 sh '''
                       ## Get the project
+
+                      sudo docker ps
                        
 
                        sudo docker build -t healerkay/pixer:latest .
