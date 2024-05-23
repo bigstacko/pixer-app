@@ -13,7 +13,7 @@ pipeline{
                 sh '''
                       ## Get the project
 
-                      sudo docker ps
+                      sudo docker ps -a
                        
 
                        sudo docker build -t healerkay/pixer:latest .
