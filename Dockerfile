@@ -1,12 +1,17 @@
-FROM jenkins/inbound-agent:latest
-USER root
-RUN apt-get update && apt-get install -y sudo
-USER jenkins
+# Use official Nginx image
+FROM nginx:alpine
+
+# Remove default Nginx website
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy your static files to the Nginx public folder
 COPY . /usr/share/nginx/html
-WORKDIR /usr/share/nginx/html
-RUN apt update
-RUN apt upgrade -y
-RUN apt install vim -y
+
+# Expose port 80
 EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
 
 
