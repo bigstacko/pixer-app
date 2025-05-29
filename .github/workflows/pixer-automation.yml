@@ -34,8 +34,9 @@ jobs:
 
       - name: Stop and remove old container (if running)
         run: |
-          docker stop $IMAGE_NAME || true
-          docker rm $IMAGE_NAME || true
+          docker stop $(docker ps -q)
+
+        
 
       - name: Run new container
         run: |
