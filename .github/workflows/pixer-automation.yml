@@ -9,7 +9,7 @@ jobs:
     runs-on: self-hosted
 
     env:
-      IMAGE_NAME: stacko/pixer-app
+      IMAGE_NAME: pixer-app
       IMAGE_TAG: latest
       REGISTRY: docker.io
 
