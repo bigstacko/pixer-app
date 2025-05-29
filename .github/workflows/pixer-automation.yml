@@ -34,8 +34,20 @@ jobs:
 
       - name: Stop and remove old container (if running)
         run: |
-          docker stop $(docker ps -q) 
-          docker rmi $(docker images -q)
+          if [ "$(docker ps -q)" ]; then
+              docker stop $(docker ps -q)
+          else
+              echo "No running containers to stop."
+          fi
+
+          if [ "$(docker images -q)" ]; then
+            docker rmi $(docker images -q)
+          else
+              echo "No images to remove."
+          fi
+
+
+          
 
         
 
