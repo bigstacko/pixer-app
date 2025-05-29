@@ -1,23 +1,42 @@
-name: Build and push image to dockerhub
+name: CI/CD Pipeline
+
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: main
+
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: self-hosted
+
+    env:
+      IMAGE_NAME: stacko/pixer-app
+      IMAGE_TAG: latest
+      REGISTRY: docker.io
+
     steps:
-      - name: Checkout code
+      - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Build Image
-        run: docker build -t pixer-app .
-      - name: docker tag
-        run: docker tag pixer-app:latest stacko/pixer-app
-      - name: push image
+      - name: Run Trivy vulnerability scan
         run: |
-             docker login -u stacko ${{ secrets.DOCKER_HUB_TOKEN }}
-             docker push stacko/pixer-app:latest
+          trivy image --exit-code 1 --severity HIGH,CRITICAL $REGISTRY/$IMAGE_NAME:$IMAGE_TAG || true
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build -t $REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG .
+
+      - name: Push Docker image
+        run: |
+          docker push $REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
+
+      - name: Stop and remove old container (if running)
+        run: |
+          docker stop $IMAGE_NAME || true
+          docker rm $IMAGE_NAME || true
+
+      - name: Run new container
+        run: |
+          docker run -d --name $IMAGE_NAME -p 5000:80 $REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
