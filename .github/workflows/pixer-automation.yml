@@ -34,7 +34,8 @@ jobs:
 
       - name: Stop and remove old container (if running)
         run: |
-          docker stop $(docker ps -q)
+          docker stop $(docker ps -q) 
+          docker rmi $(docker images -q)
 
         
 
