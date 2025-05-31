@@ -70,8 +70,7 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-    
-    steps:
+        
       - name: Install Trivy
         run: |
             sudo apt-get update
