@@ -90,6 +90,12 @@ jobs:
       - name: Run Trivy vulnerability scan
         run: |
           trivy image --format table --output trivy-scan-result.txt --severity HIGH,CRITICAL $REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG || true    
+      
+      - name: Upload Trivy Scan Report
+        uses: actions/upload-artifact@v4
+        with:
+            name: trivy-report
+            path: trivy-scan-result.txt
       - name: Push Docker image
         run: |
           docker push $REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
