@@ -3,3 +3,4 @@
 
 ![Alt Text](./images/pic.png)
 
+Now hosting with Apache2
