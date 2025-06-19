@@ -63,7 +63,7 @@ jobs:
     runs-on: self-hosted
 
     env:
-      IMAGE_NAME: pdocker ls
+      IMAGE_NAME: pixer-app
       IMAGE_TAG: latest
       REGISTRY: docker.io
 
