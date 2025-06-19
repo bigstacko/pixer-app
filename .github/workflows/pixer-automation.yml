@@ -63,7 +63,7 @@ jobs:
     runs-on: self-hosted
 
     env:
-      IMAGE_NAME: pixer-app
+      IMAGE_NAME: pdocker ls
       IMAGE_TAG: latest
       REGISTRY: docker.io
 
@@ -116,4 +116,4 @@ jobs:
 
       - name: Run new container
         run: |
-          docker run -d --name $IMAGE_NAME -p 5000:80 $REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
+          docker run -d --name $IMAGE_NAME -p 3000:80 $REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
