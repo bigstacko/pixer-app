@@ -59,7 +59,7 @@ on:
 
 
 jobs:
-  deploy:
+  build:
     runs-on: self-hosted
 
     env:
@@ -117,7 +117,7 @@ jobs:
       - name: Run new container
         run: |
           docker run -d --name $IMAGE_NAME -p 3000:80 $REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
-notify-success:
+  notify-success:
     needs: build
     if: ${{ success() }}
     runs-on: ubuntu-latest
@@ -138,8 +138,7 @@ notify-success:
             Branch: ${{ github.ref_name }}
             Run: ${{ github.run_id }}
             Commit: ${{ github.sha }}
-
-notify-failure:
+  notify-failure:
     needs: build
     if: ${{ failure() }}
     runs-on: ubuntu-latest
