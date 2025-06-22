@@ -117,3 +117,47 @@ jobs:
       - name: Run new container
         run: |
           docker run -d --name $IMAGE_NAME -p 3000:80 $REGISTRY/${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME:$IMAGE_TAG
+ notify-success:
+    needs: build
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send success email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USER }}
+          password: ${{ secrets.SMTP_PASS }}
+          subject: "✅ Build Successful - ${{ github.repository }}"
+          to: phillipstack.co@gmail.com, taykeny94@gmail.com 
+          from: ${{ secrets.SMTP_USER }}
+          body: |
+            ✅ CI/CD pipeline build successful.
+            Repo: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Run: ${{ github.run_id }}
+            Commit: ${{ github.sha }}
+
+  notify-failure:
+    needs: build
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send failure email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USER }}
+          password: ${{ secrets.SMTP_PASS }}
+          subject: "❌ Build Failed - ${{ github.repository }}"
+          to: phillipstack.co@gmail.com, taykeny94@gmail.com
+          from: ${{ secrets.SMTP_USER }}
+          body: |
+            ❌ CI/CD build FAILED!
+            Repo: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Run: ${{ github.run_id }}
+            Commit: ${{ github.sha }}
+            Check logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
