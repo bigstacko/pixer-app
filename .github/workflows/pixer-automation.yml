@@ -139,7 +139,7 @@ notify-success:
             Run: ${{ github.run_id }}
             Commit: ${{ github.sha }}
 
-  notify-failure:
+notify-failure:
     needs: build
     if: ${{ failure() }}
     runs-on: ubuntu-latest
