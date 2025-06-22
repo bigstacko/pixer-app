@@ -130,7 +130,7 @@ jobs:
           username: ${{ secrets.SMTP_USER }}
           password: ${{ secrets.SMTP_PASS }}
           subject: "✅ Build Successful - ${{ github.repository }}"
-          to: phillipstack.co@gmail.com, taykeny94@gmail.com 
+          to: phillipstack.co@gmail.com, taykeny94@gmail.com, emmaasoh@gmail.com 
           from: ${{ secrets.SMTP_USER }}
           body: |
             ✅ CI/CD pipeline build successful.
@@ -151,7 +151,7 @@ jobs:
           username: ${{ secrets.SMTP_USER }}
           password: ${{ secrets.SMTP_PASS }}
           subject: "❌ Build Failed - ${{ github.repository }}"
-          to: phillipstack.co@gmail.com, taykeny94@gmail.com
+          to: phillipstack.co@gmail.com, taykeny94@gmail.com, emmaasoh@gmail.com
           from: ${{ secrets.SMTP_USER }}
           body: |
             ❌ CI/CD build FAILED!
